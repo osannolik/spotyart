@@ -1,0 +1,14 @@
+[Unit]
+Description=En very cool display
+Wants=network.target multi-user.target
+After=pigpiod.service syslog.target network-online.target
+
+[Service]
+Type=simple
+ExecStart=/home/pi/repos/spotyart/start.sh
+Restart=on-failure
+RestartSec=10
+KillMode=mixed
+
+[Install]
+WantedBy=default.target
