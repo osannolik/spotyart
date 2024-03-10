@@ -3,6 +3,9 @@
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 
+import logging
+logger = logging.getLogger(__name__)
+
 def song(id, artist, device, image):
 	return {
 		'content': 'song',
@@ -24,11 +27,16 @@ class SpotifyClient(object):
 	def __init__(self):
 		super(SpotifyClient, self).__init__()
 		scope = "user-read-playback-state"
-		self._sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope, open_browser=False))
+		self._sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope, requests_timeout=10, open_browser=False))
 
 
 	def currently_playing(self):
-		playing = self._sp.current_playback()
+		try:
+			playing = self._sp.current_playback()
+
+		except Exception as e:
+			logger.error("EXCEPTION polling spotipy", e)
+			return None
 
 		if playing is None:
 			return None

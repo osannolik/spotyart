@@ -26,7 +26,7 @@ class SpotifyWidget(Gtk.Image):
         self._sp = SpotifyClient()
         self._last_id = None
 
-        GLib.timeout_add(500, self.update)
+        GLib.timeout_add(1000, self.update)
 
     def update(self):
         playing = self._sp.currently_playing()
